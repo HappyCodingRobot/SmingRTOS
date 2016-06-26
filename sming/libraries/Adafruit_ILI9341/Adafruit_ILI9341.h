@@ -30,18 +30,6 @@
 
 #include "../Adafruit_GFX/Adafruit_GFX.h"
 
-#if defined(__SAM3X8E__)
-  #include <include/pio.h>
-  #define PROGMEM
-  #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
-  #define pgm_read_word(addr) (*(const unsigned short *)(addr))
-  typedef unsigned char prog_uchar;
-#elif defined(__AVR__)
-  #include <avr/pgmspace.h>
-#elif defined(ESP8266)
-  #include <pgmspace.h>
-#endif
-
 #define ILI9341_TFTWIDTH  240
 #define ILI9341_TFTHEIGHT 320
 
@@ -123,34 +111,30 @@
 #define ILI9341_GREENYELLOW 0xAFE5      /* 173, 255,  47 */
 #define ILI9341_PINK        0xF81F
 
-#define MAKEWORD(b1, b2, b3, b4) (uint32_t(b1) | ((b2) << 8) | ((b3) << 16) | ((b4) << 24))
+//#define MAKEWORD(b1, b2, b3, b4) (uint32_t(b1) | ((b2) << 8) | ((b3) << 16) | ((b4) << 24))
 
 class Adafruit_ILI9341 : public Adafruit_GFX {
 private:
     uint8_t tabcolor;
     void spiwrite(uint8_t);
+    void spiwrite16(uint16_t);
+    
     void writecommand(uint8_t c);
     void writedata(uint8_t d);
+    void writedata16(uint16_t d);
     void commandList(const uint8_t *addr);
 //    void transmitCmdData(uint8_t cmd, const uint8_t *data, uint8_t numDataByte);    // remove later
     
     boolean hwSPI;
     
-#if defined(__AVR__) || defined(CORE_TEENSY) || defined (__ESP8266_EX__)
     volatile uint8_t *dataport, *clkport, *csport, *rsport;
-    uint8_t _cs, _rs, _rst, _sid, _sclk,
+    uint8_t _cs, _rs, _rst,
     datapinmask, clkpinmask, cspinmask, rspinmask,
     colstart, rowstart; // some displays need this changed
-#elif defined(__arm__)
-    volatile RwReg *dataport, *clkport, *csport, *rsport;
-    uint32_t _cs, _rs, _sid, _sclk,
-    datapinmask, clkpinmask, cspinmask, rspinmask,
-    colstart, rowstart; // some displays need this changed
-    int32_t _rst; // Must use signed type since a -1 sentinel is assigned.
-#endif
+    SPIBase & pSPI;
 
 public:
-    Adafruit_ILI9341(int8_t CS, int8_t RS, int8_t SID, int8_t SCLK, int8_t RST = -1);
+    Adafruit_ILI9341(SPIBase & spiRef, int8_t CS, int8_t RS, int8_t RST = -1);
     Adafruit_ILI9341(int8_t CS, int8_t RS, int8_t RST = -1);
 
     void init(uint32_t speed = 10000000);
