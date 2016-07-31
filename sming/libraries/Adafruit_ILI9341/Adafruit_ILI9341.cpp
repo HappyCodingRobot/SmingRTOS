@@ -16,6 +16,10 @@
  * ported for Sming by M.Bozkurt.
  * alonewolf07@gmail.com
  ********************************/
+/********************************
+ * ported for SmingRTOS by
+ * HappyCodingRobot.
+ ********************************/
 
 #include <include/SmingCore.h>
 #include "Adafruit_ILI9341.h"

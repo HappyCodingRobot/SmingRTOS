@@ -16,6 +16,10 @@
  * ported for Sming by M.Bozkurt.
  * alonewolf07@gmail.com
  ********************************/
+/********************************
+ * ported for SmingRTOS by
+ * HappyCodingRobot.
+ ********************************/
 
 #ifndef _ADAFRUIT_ILI9341H_
 #define _ADAFRUIT_ILI9341H_

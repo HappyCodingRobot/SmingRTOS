@@ -33,7 +33,7 @@
 //#define TFT_CS      2
 #define TFT_SCLK    14
 #define TFT_MOSI    13
-#define TFT_MISO    12
+#define TFT_MISO    12      // not used, just for softSPI contructor
 #define TFT_RST     4
 #define TFT_DC      5
 #define TFT_CS      15
@@ -47,7 +47,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(sSPI, TFT_CS, TFT_DC, TFT_RST);
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 #endif
 
-Timer guiTimer;
+Timer guiTimer = new Timer(true);   // use Queued Timer to not trigger WD on complex screens
 
 int r=0;
 
@@ -315,7 +315,7 @@ void init() {
     tft.println("Sming  Framework");
     tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK); // text
     tft.setCursor(60, 75);
-    tft.println("              v1.1");
+    tft.println("              v1.1_rtos");
     tft.setTextColor(ILI9341_CYAN);
     tft.setCursor(60, 90);
     tft.println("ili9340-40C-41 ");
@@ -326,7 +326,6 @@ void init() {
     //debugf("delay done");
     tft.fillScreen(ILI9341_BLACK);
     debugf("fillScreen(0) done");
-//    guiTimer.initializeMs(1000, basicGui).start();
     guiTimer.initializeMs(1000, screen1).start(FALSE);
-    //debugf("timer task started");
+    debugf("timer task started");
 }
