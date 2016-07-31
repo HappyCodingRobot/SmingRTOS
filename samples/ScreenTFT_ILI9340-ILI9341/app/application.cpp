@@ -299,7 +299,7 @@ void init() {
     // text display tests
     //tft.begin();
     tft.init();
-    //tft.init(4000000);
+    //tft.init(4000000);        // optionally init with specific SPI speed (HWSPI)
     debugf("Init done");
     debugf("-clearscreen\n");
     tft.fillScreen(ILI9341_BLACK);
@@ -326,7 +326,7 @@ void init() {
     //debugf("delay done");
     tft.fillScreen(ILI9341_BLACK);
     debugf("fillScreen(0) done");
-    guiTimer.initializeMs(1000, basicGui).start();
-//    guiTimer.initializeMs(1000, screen1).start(FALSE);
+//    guiTimer.initializeMs(1000, basicGui).start();
+    guiTimer.initializeMs(1000, screen1).start(FALSE);
     //debugf("timer task started");
 }
